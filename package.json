@@ -26,11 +26,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JahanzaibDev/jahanzaib-portfolio"
+    "url": "https://github.com/Jahanzaib-dotcom/jahanzaib-portfolio"
   },
-  "homepage": "https://github.com/JahanzaibDev/jahanzaib-portfolio",
+  "homepage": "https://github.com/Jahanzaib-dotcom/jahanzaib-portfolio",
   "bugs": {
-    "url": "https://github.com/JahanzaibDev/jahanzaib-portfolio/issues"
+    "url": "https://github.com/Jahanzaib-dotcom/jahanzaib-portfolio/issues"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

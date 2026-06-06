@@ -2,6 +2,8 @@
 
 A Next.js portfolio site for Muhammad Jahanzaib.
 
+Repository: https://github.com/Jahanzaib-dotcom/jahanzaib-portfolio
+
 ## Run locally
 
 ```bash
@@ -11,4 +13,7 @@ npm run dev
 
 ## Deploy
 
-Push this repository to GitHub and deploy it on Vercel (recommended for Next.js).
+This repository is now connected to GitHub.
+
+
+
