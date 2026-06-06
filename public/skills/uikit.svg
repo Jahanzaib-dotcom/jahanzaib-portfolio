@@ -1,0 +1,5 @@
+<svg viewBox="0 0 128 128" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#0D1B2A" stroke="#00B4D8" stroke-width="2" />
+  <rect x="24" y="24" width="80" height="80" rx="12" fill="none" stroke="#00B4D8" stroke-width="4" stroke-dasharray="8,4" />
+  <text x="64" y="78" font-family="'Orbitron', sans-serif" font-size="42" font-weight="900" fill="#00F5D4" text-anchor="middle">UI</text>
+</svg>

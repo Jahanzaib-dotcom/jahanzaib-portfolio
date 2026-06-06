@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jahanzaib Shakeel | Full-Stack & iOS Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cedarville+Cursive&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#030014',
+            violet: '#7042f8',
+            violet2: '#b49bff',
+            cyan: '#00d4ff',
+            textColor: '#BCC8FF',
+            muted: '#6b7db3',
+          },
+          fontFamily: {
+            cursive: ['Cedarville Cursive', 'cursive'],
+            inter: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    body {
+      background-color: #030014;
+      color: #BCC8FF;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .cursive {
+      font-family: "Cedarville Cursive", cursive;
+    }
+
+    .Welcome-text {
+      background: linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.4),
+          rgba(255, 255, 255, 0.4)
+        ),
+        linear-gradient(90.01deg, #e59cff 0.01%, #ba9cff 50.01%, #9cb2ff 100%);
+      background-blend-mode: normal, screen;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .Welcome-box {
+      isolation: isolate;
+      overflow: hidden;
+      align-items: center;
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      border-radius: 32px;
+      box-shadow: inset 0 -7px 11px #a48fff1f;
+      display: flex;
+      position: relative;
+      width: max-content;
+      transition: 0.45s cubic-bezier(0.6, 0.6, 0, 1) box-shadow;
+    }
+
+    .button-primary {
+      background: linear-gradient(
+          180deg,
+          rgba(60, 8, 126, 0) 0%,
+          rgba(60, 8, 126, 0.32) 100%
+        ),
+        rgba(113, 47, 255, 0.12);
+      box-shadow: inset 0 0 12px #bf97ff3d;
+    }
+    .button-primary:hover {
+      background: linear-gradient(
+          180deg,
+          rgba(60, 8, 126, 0) 0%,
+          rgba(60, 8, 126, 0.42) 100%
+        ),
+        rgba(113, 47, 255, 0.24);
+      box-shadow: inset 0 0 12px #bf97ff70;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scrollbar-hidden {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hidden::-webkit-scrollbar {
+      display: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom Cursor */
+    #cur-dot {
+      width: 8px; height: 8px;
+      background: #b49bff;
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      box-shadow: 0 0 10px #7042f8, 0 0 20px rgba(112,66,248,0.5);
+      transition: transform 0.1s;
+    }
+    #cur-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(112,66,248,0.5);
+      border-radius: 50%;
+      position: fixed; pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: all 0.15s ease-out;
+    }
+
+    /* Scroll Reveal Animation classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Marquee row alignment */
+    .mq-wrap {
+      position: relative; width: 100%; overflow: hidden;
+    }
+    .mq-wrap::before, .mq-wrap::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 15%; z-index: 2; pointer-events: none;
+    }
+    .mq-wrap::before {
+      left: 0; background: linear-gradient(to right, #030014 0%, transparent 100%);
+    }
+    .mq-wrap::after {
+      right: 0; background: linear-gradient(to left, #030014 0%, transparent 100%);
+    }
+
+    .mq-track {
+      display: flex; gap: 20px; width: max-content;
+      animation: mq-fwd 25s linear infinite;
+      padding: 10px 0;
+    }
+    .mq-track.rev {
+      animation: mq-rev 25s linear infinite;
+    }
+    .mq-wrap:hover .mq-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes mq-fwd {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    @keyframes mq-rev {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+
+    .skill-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      background: rgba(3, 0, 20, 0.75);
+      border: 1px solid rgba(112, 66, 248, 0.2);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+    .skill-badge:hover {
+      border-color: #7042f8;
+      box-shadow: 0 0 15px rgba(112, 66, 248, 0.4);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-[#030014] overflow-y-scroll overflow-x-hidden select-none scrollbar-hidden">
+
+  <!-- Custom Cursor Elements -->
+  <div id="cur-dot" class="hidden md:block"></div>
+  <div id="cur-ring" class="hidden md:block"></div>
+
+  <!-- 3D Starfield Canvas background -->
+  <canvas id="canvas-bg" class="w-full h-screen fixed inset-0 -z-10 pointer-events-none"></canvas>
+
+  <!-- ── NAVBAR ─────────────────────────────────────────────────── -->
+  <nav class="w-full h-[65px] fixed top-0 shadow-lg shadow-[#2A0E61]/50 bg-[#03001427] backdrop-blur-md z-50 px-6 md:px-10 transition-colors duration-300" id="navbar">
+    <div class="w-full h-full flex items-center justify-between m-auto max-w-[1240px]">
+      
+      <!-- Logo + Name -->
+      <a href="#about-me" class="flex items-center">
+        <img src="public/logo.png" alt="Logo" class="w-[60px] h-[60px] cursor-pointer" />
+        <span class="hidden md:block font-bold ml-2.5 text-gray-300 hover:text-white transition">Jahanzaib Shakeel</span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <div class="hidden md:flex w-[480px] h-full items-center justify-between">
+        <div class="flex items-center justify-between w-full border border-[rgba(112,66,248,0.38)] bg-[rgba(3,0,20,0.37)] px-6 py-2.5 rounded-full text-gray-200 text-sm tracking-wide">
+          <a href="#about-me" class="cursor-pointer hover:text-[#7042f8] transition">About me</a>
+          <a href="#skills" class="cursor-pointer hover:text-[#7042f8] transition">Skills</a>
+          <a href="#experience" class="cursor-pointer hover:text-[#7042f8] transition">Experience</a>
+          <a href="#projects" class="cursor-pointer hover:text-[#7042f8] transition">Projects</a>
+        </div>
+      </div>
+
+      <!-- Social Icons (Desktop) -->
+      <div class="hidden md:flex flex-row gap-5">
+        <a href="https://github.com/JahanzaibDev" target="_blank" rel="noreferrer noopener" class="text-white hover:text-[#7042f8] transition text-xl">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/muhammad-jahanzaib-69a33733b" target="_blank" rel="noreferrer noopener" class="text-white hover:text-[#7042f8] transition text-xl">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 0 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"></path></svg>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="block md:hidden text-white text-3xl focus:outline-none" id="hamburger-btn">☰</button>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div class="absolute top-[65px] left-0 w-full bg-[#030014] p-6 flex flex-col items-center gap-6 border-b border-[#7042f822] hidden" id="mobile-menu">
+      <a href="#about-me" class="text-gray-200 hover:text-[#7042f8] transition text-base tracking-wide py-2">About me</a>
+      <a href="#skills" class="text-gray-200 hover:text-[#7042f8] transition text-base tracking-wide py-2">Skills</a>
+      <a href="#experience" class="text-gray-200 hover:text-[#7042f8] transition text-base tracking-wide py-2">Experience</a>
+      <a href="#projects" class="text-gray-200 hover:text-[#7042f8] transition text-base tracking-wide py-2">Projects</a>
+      <div class="flex gap-6 mt-4">
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="text-white text-2xl">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/muhammad-jahanzaib-69a33733b" target="_blank" class="text-white text-2xl">
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 0 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"></path></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO SECTION ────────────────────────────────────────────── -->
+  <section class="relative flex flex-col min-h-screen w-full justify-center items-center px-6 md:px-20 pt-[65px] overflow-hidden" id="about-me">
+    <!-- Cosmic background video -->
+    <video autoplay muted loop playsinline class="absolute top-[-360px] left-0 w-full h-full object-cover -z-20 rotate-180 opacity-55 pointer-events-none">
+      <source src="public/videos/blackhole.webm" type="video/webm" />
+    </video>
+
+    <!-- Content Flex Grid -->
+    <div class="w-full max-w-[1240px] flex flex-col lg:flex-row items-center justify-between z-20 gap-12 mt-16 md:mt-24">
+      
+      <!-- Text Area -->
+      <div class="flex flex-col gap-6 max-w-[650px] text-start reveal">
+        <!-- Sparkles badge -->
+        <div class="Welcome-box py-2 px-3 border border-[#7042f88b] opacity-[0.9]">
+          <svg class="text-[#b49bff] mr-2 h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="M9 21.5L7.56 18.06L4.12 16.62L7.56 15.18L9 11.74L10.44 15.18L13.88 16.62L10.44 18.06L9 21.5ZM19 13.5L18.1 11.5L16.1 10.6L18.1 9.7L19 7.7L19.9 9.7L21.9 10.6L19.9 11.5L19 13.5ZM19 7.5L18.46 6.3L17.26 5.76L18.46 5.22L19 4.02L19.54 5.22L20.74 5.76L19.54 6.3L19 7.5Z"/></svg>
+          <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">Fullstack &amp; iOS Developer Portfolio</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight">
+          Providing <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">the best</span> project experience.
+        </h1>
+
+        <!-- Subheading -->
+        <p class="text-gray-300 text-lg leading-relaxed max-w-[550px]">
+          I'm Jahanzaib Shakeel, a Full-Stack &amp; iOS Developer building high-performance systems from SwiftUI applications to C# ASP.NET Core backends. Currently shipping features at <strong class="text-[#b49bff]">Zeetech App</strong>.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap gap-4 mt-2">
+          <a href="#projects" class="py-3 px-8 text-center text-white cursor-pointer rounded-lg button-primary font-bold uppercase text-sm transition-all duration-200">
+            View Projects
+          </a>
+          <a href="#contact" class="py-3 px-8 text-center text-[#b49bff] border border-[#7042f88b] rounded-lg font-bold uppercase text-sm hover:bg-[#7042f81a] transition-all duration-200">
+            Contact Me
+          </a>
+        </div>
+      </div>
+
+      <!-- Graphic Area -->
+      <div class="w-full max-w-[550px] lg:max-w-[600px] flex justify-center items-center reveal transition-delay-300">
+        <img src="public/hero-bg.svg" alt="Work Connections Graph" class="w-full object-contain pointer-events-none select-none filter drop-shadow-[0_0_30px_rgba(112,66,248,0.25)]" />
+      </div>
+
+    </div>
+    
+    <!-- Scrolling visual indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none hidden md:flex">
+      <span class="text-[10px] tracking-[3px] uppercase text-muted">Scroll</span>
+      <div class="w-[1px] h-14 bg-gradient-to-b from-transparent to-[#7042f8] animate-pulse"></div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT SUMMARY SECTION ───────────────────────────────────── -->
+  <section class="w-full py-20 px-6 md:px-10 max-w-[1240px] m-auto z-30 relative" id="about">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <!-- Left: Decorative Space Orb Core (Floating & Spinning) -->
+      <div class="flex items-center justify-center relative reveal">
+        <!-- Floating central core -->
+        <div class="w-[260px] md:w-[320px] aspect-square rounded-full bg-gradient-to-tr from-[#5011cc] via-[#7042f8] to-[#00d4ff] flex items-center justify-center text-5xl font-black text-white shadow-[0_0_60px_rgba(112,66,248,0.4),0_0_120px_rgba(112,66,248,0.2)] animate-bounce duration-5000">
+          JZ
+        </div>
+        <!-- Outer orbital rings -->
+        <div class="absolute border border-purple-500/20 rounded-full w-[310px] md:w-[380px] aspect-square animate-[spin_20s_linear_infinite]" style="border-width: 1px;">
+          <!-- Planet -->
+          <div class="absolute w-3.5 h-3.5 rounded-full bg-[#b49bff] shadow-[0_0_10px_#b49bff] -top-1.5 left-1/2 transform -translate-x-1/2"></div>
+        </div>
+        <div class="absolute border border-purple-300/10 rounded-full w-[360px] md:w-[440px] aspect-square animate-[spin_35s_linear_infinite_reverse]" style="border-width: 1px;"></div>
+      </div>
+
+      <!-- Right: Biography & Quick Stats -->
+      <div class="flex flex-col gap-6 reveal">
+        <div class="Welcome-box py-1.5 px-3 border border-[#7042f88b] opacity-[0.9]">
+          <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">01 — Profile</span>
+        </div>
+        <h2 class="text-4xl font-extrabold text-white">About <span class="italic text-purple-400">Me</span></h2>
+        
+        <p class="text-gray-300 leading-relaxed text-base">
+          I'm a <strong class="text-white">passionate Full-Stack &amp; iOS Developer</strong> pursuing a BSCS degree at Punjab University Jhelum Campus (7th semester). I build end-to-end applications — from clean SwiftUI interfaces to robust C# REST APIs.</p>
+        <p class="text-gray-300 leading-relaxed text-base">
+          Currently working as a <strong class="text-white">Junior iOS Developer</strong> on the live production <strong class="text-white">Zeetech App</strong>, contributing real features and shipping code to actual users every day.</p>
+        <p class="text-gray-300 leading-relaxed text-base">
+          My goal is to become a professional Full-Stack &amp; Mobile Engineer — building impactful products used by real people at scale.</p>
+        
+        <!-- Dynamic Statistics Row -->
+        <div class="grid grid-cols-3 gap-4 mt-6">
+          <div class="p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl text-center hover:border-[#7042f899] hover:shadow-[0_0_15px_rgba(112,66,248,0.2)] transition-all duration-300">
+            <div class="text-3xl font-bold text-[#b49bff]">6+</div>
+            <div class="text-[10px] uppercase tracking-wider text-gray-400 mt-2">Projects Built</div>
+          </div>
+          <div class="p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl text-center hover:border-[#7042f899] hover:shadow-[0_0_15px_rgba(112,66,248,0.2)] transition-all duration-300">
+            <div class="text-3xl font-bold text-[#b49bff]">4+</div>
+            <div class="text-[10px] uppercase tracking-wider text-gray-400 mt-2">Languages</div>
+          </div>
+          <div class="p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl text-center hover:border-[#7042f899] hover:shadow-[0_0_15px_rgba(112,66,248,0.2)] transition-all duration-300">
+            <div class="text-3xl font-bold text-[#b49bff]">1</div>
+            <div class="text-[10px] uppercase tracking-wider text-gray-400 mt-2">Production App</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS / ARSENAL SECTION ────────────────────────────────── -->
+  <section class="w-full py-20 relative overflow-hidden z-30" id="skills">
+    <!-- Skills cosmic background video -->
+    <div class="absolute inset-0 w-full h-full flex items-center justify-center -z-10 opacity-30 pointer-events-none">
+      <video autoplay muted loop playsinline class="w-full h-auto min-h-full object-cover">
+        <source src="public/videos/skills-bg.webm" type="video/webm" />
+      </video>
+    </div>
+
+    <!-- Section Heading -->
+    <div class="max-w-[1240px] m-auto px-6 md:px-10 flex flex-col items-center text-center mb-12 reveal">
+      <div class="Welcome-box py-1.5 px-3 border border-[#7042f88b] opacity-[0.9] mb-4">
+        <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">02 — Arsenal</span>
+      </div>
+      <h2 class="text-4xl font-extrabold text-white">Tech <span class="italic text-purple-400">Stack</span></h2>
+      <p class="font-cursive text-xl text-gray-300 mt-4">Making apps with modern technologies.</p>
+    </div>
+
+    <!-- Infinite Scroll Marquees -->
+    <!-- Row 1: Frontend & Mobile -->
+    <div class="mq-wrap w-full my-4 reveal">
+      <div class="mq-track" id="mq1">
+        <!-- Will be populated dynamically via JavaScript for infinite loop -->
+      </div>
+    </div>
+
+    <!-- Row 2: Backend, Databases & Dev Tools -->
+    <div class="mq-wrap w-full my-4 reveal">
+      <div class="mq-track rev" id="mq2">
+        <!-- Will be populated dynamically via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORK EXPERIENCE SECTION ─────────────────────────────────── -->
+  <section class="w-full py-20 px-6 md:px-10 max-w-[1240px] m-auto z-30 relative" id="experience">
+    <div class="flex flex-col items-center justify-center reveal">
+      
+      <!-- Section Heading -->
+      <div class="Welcome-box py-1.5 px-3 border border-[#7042f88b] opacity-[0.9] mb-4">
+        <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">03 — Journey &amp; Experience</span>
+      </div>
+      <h2 class="text-4xl font-extrabold text-white text-center mb-16">Work Experience</h2>
+
+      <div class="w-full flex flex-col gap-10 items-center">
+        
+        <!-- Card 1: Frontend Developer (Next.js) -->
+        <div class="w-full max-w-[800px] bg-[rgba(3,0,20,0.6)] border border-[#7042f83b] rounded-2xl p-8 shadow-xl shadow-purple-500/10 backdrop-blur-md relative overflow-hidden group hover:border-[#7042f88b] transition-all duration-300">
+          <div class="absolute top-0 left-0 bottom-0 w-[4px] bg-gradient-to-b from-purple-500 to-cyan-500"></div>
+          <div class="absolute -right-20 -top-20 w-[200px] h-[200px] rounded-full bg-purple-500/5 blur-[50px] pointer-events-none group-hover:bg-purple-500/10 transition-all duration-300"></div>
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Frontend Developer (Next.js)</h3>
+              <p class="text-[#b49bff] text-lg font-medium mt-1">Freelance &amp; Open Source</p>
+            </div>
+            <div class="self-start flex items-center gap-2 bg-[#00d4ff1a] border border-[#00d4ff3d] rounded-full px-4 py-1.5 text-[#00d4ff] text-xs font-semibold uppercase tracking-wider">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#00d4ff] animate-pulse shadow-[0_0_8px_#00d4ff]"></span>
+              Web Applications
+            </div>
+          </div>
+          <p class="text-gray-300 text-base leading-relaxed mb-6">
+            Designed and engineered interactive web interfaces, optimized client performance, and integrated secure serverless api structures.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Building responsive, semantic user interfaces using Next.js 14/15, React, and TypeScript</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Designing premium aesthetic structures with Tailwind CSS and Framer Motion micro-animations</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Implementing Next.js server actions and setting up Nodemailer SMTP form transmissions</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Optimizing page render speeds, LCP, and CLS scores via Server-Side Rendering (SSR)</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Managing remote REST APIs and local client caching trees with React Query</li>
+          </ul>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">Next.js 14</span>
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">React</span>
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">Tailwind CSS</span>
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">TypeScript</span>
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">Framer Motion</span>
+            <span class="bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.22)] rounded-full px-3 py-1 text-[#00d4ff] text-xs font-medium">Nodemailer API</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Junior iOS Developer -->
+        <div class="w-full max-w-[800px] bg-[rgba(3,0,20,0.6)] border border-[#7042f83b] rounded-2xl p-8 shadow-xl shadow-purple-500/10 backdrop-blur-md relative overflow-hidden group hover:border-[#7042f88b] transition-all duration-300">
+          <div class="absolute top-0 left-0 bottom-0 w-[4px] bg-gradient-to-b from-purple-500 to-cyan-500"></div>
+          <div class="absolute -right-20 -top-20 w-[200px] h-[200px] rounded-full bg-purple-500/5 blur-[50px] pointer-events-none group-hover:bg-purple-500/10 transition-all duration-300"></div>
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Junior iOS Developer</h3>
+              <p class="text-[#b49bff] text-lg font-medium mt-1">Zeetech App</p>
+            </div>
+            <div class="self-start flex items-center gap-2 bg-[#7042f81a] border border-[#7042f83d] rounded-full px-4 py-1.5 text-[#b49bff] text-xs font-semibold uppercase tracking-wider">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#7042f8] animate-pulse shadow-[0_0_8px_#7042f8]"></span>
+              Current Role
+            </div>
+          </div>
+          <p class="text-gray-300 text-base leading-relaxed mb-6">
+            Working on a live service-based mobile application, contributing real features to production, integrating APIs, and collaborating with the development team daily.
+          </p>
+          <ul class="space-y-3 mb-8">
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Developing and maintaining iOS features using SwiftUI</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Implementing modern UI screens with MVVM architecture</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Integrating REST APIs with frontend iOS systems</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Debugging and resolving production-level issues</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Improving app performance, stability and user experience</li>
+            <li class="flex items-start text-gray-400 text-sm leading-relaxed"><span class="text-[#b49bff] mr-3 font-bold">→</span>Building service-based workflows: bookings, user requests, handling systems</li>
+          </ul>
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">SwiftUI</span>
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">Swift</span>
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">REST APIs</span>
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">Xcode</span>
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">MVVM</span>
+            <span class="bg-[rgba(112,66,248,0.08)] border border-[rgba(112,66,248,0.22)] rounded-full px-3 py-1 text-[#b49bff] text-xs font-medium">Firebase</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ENCRYPTION INTERACTIVE SECTION ──────────────────────────── -->
+  <section class="w-full relative min-h-[550px] flex flex-col justify-center items-center z-30 py-20 overflow-hidden" id="security">
+    <!-- Encryption Background Video -->
+    <div class="absolute inset-0 w-full h-full flex justify-center items-start -z-10 pointer-events-none">
+      <video autoplay muted loop playsinline class="w-full h-auto min-h-full object-cover opacity-35">
+        <source src="public/videos/encryption-bg.webm" type="video/webm" />
+      </video>
+    </div>
+
+    <!-- Headline -->
+    <div class="text-center mb-12 reveal">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-gray-200">
+        Performance <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">&amp;</span> Security.
+      </h2>
+    </div>
+
+    <!-- Sliding Lock Element (Interactive) -->
+    <div class="flex flex-col items-center group cursor-pointer relative z-20 reveal" id="lock-wrapper">
+      <div class="flex flex-col items-center">
+        <!-- Top Shackle slides down on hover -->
+        <img src="public/lock-top.png" alt="Lock top" class="w-[50px] h-[50px] translate-y-5 transition-all duration-300 group-hover:translate-y-11" />
+        <img src="public/lock-main.png" alt="Lock main" class="w-[70px] h-[70px] z-10" />
+      </div>
+      <div class="Welcome-box px-4 py-1 border border-[#7042F88B] mt-5 opacity-90">
+        <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">Encryption</span>
+      </div>
+    </div>
+
+    <!-- Bottom subtext -->
+    <div class="mt-8 text-center px-4 reveal">
+      <p class="font-cursive text-xl text-gray-300">Secure your data with end-to-end encryption.</p>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS SECTION ────────────────────────────────────────── -->
+  <section class="w-full py-20 px-6 md:px-10 max-w-[1240px] m-auto z-30 relative" id="projects">
+    <div class="flex flex-col items-center justify-center">
+      
+      <!-- Section Heading -->
+      <div class="Welcome-box py-1.5 px-3 border border-[#7042f88b] opacity-[0.9] mb-4 reveal">
+        <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">04 — Portfolio Log</span>
+      </div>
+      <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500 text-center mb-16 reveal">My Featured Projects</h2>
+
+      <!-- Responsive Cards Grid -->
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        
+        <!-- Card 1: Daily Visiting App (iOS) -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-1.png" alt="Daily Visiting App" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Daily Visiting App (iOS)</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Service provider platform with real-time maps, resident timelines, and a full C# ASP.NET Core + MySQL backend.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">SwiftUI</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">ASP.NET Core</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">MySQL</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2: Service Booking Platform -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-2.png" alt="Service Booking Platform" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Service Booking</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Full-stack web application designed for booking home services. Includes separate user, admin, and technician dashboards.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">C#</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">ASP.NET Core</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">SQL Server</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3: Hospital Management System -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-3.png" alt="Hospital Management" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Hospital Management</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Desktop tool for tracking patient admissions, doctor schedules, appointments, and billing via SQL Server.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">Java Swing</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">JDBC</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">SQL Server</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4: Library Management System -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-2.png" alt="Library Management" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Library Management</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Windows Forms application handling book inventory, student card loans, fine calculations, and status updates.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">C# WinForms</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">SQL Server</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 5: CPU Scheduling Visualizer -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-3.png" alt="CPU Scheduling" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">CPU Scheduler Visualizer</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Operating System simulator visualizing FCFS, SJF, Priority, and Round Robin timelines inside desktop Gantt charts.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">Java Swing</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">AWT</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 6: Smart Study Assistant -->
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="relative overflow-hidden rounded-xl shadow-lg border border-[#2A0E61] bg-[rgba(3,0,20,0.6)] backdrop-blur-md hover:border-[#7042f8aa] hover:shadow-[0_0_20px_rgba(112,66,248,0.2)] transition-all duration-300 flex flex-col group reveal">
+          <img src="public/projects/project-1.png" alt="Smart Study Assistant" class="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="p-5 flex flex-col flex-grow justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white tracking-wide">Smart Study Assistant</h3>
+              <p class="mt-2 text-gray-300 text-sm leading-relaxed">
+                Cross-platform mobile application managing study planners, customized push notifications, and calendars.
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-5">
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">Flutter</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">Dart</span>
+              <span class="text-[10px] font-semibold bg-[#7042f81a] border border-[#7042f83d] rounded px-2 py-0.5 text-[#b49bff]">Firebase</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT SECTION ────────────────────────────────────────── -->
+  <section class="w-full py-20 px-6 md:px-10 max-w-[1240px] m-auto z-30 relative" id="contact">
+    <div class="flex flex-col items-center justify-center">
+      
+      <!-- Section Heading -->
+      <div class="Welcome-box py-1.5 px-3 border border-[#7042f88b] opacity-[0.9] mb-4 reveal">
+        <span class="Welcome-text text-xs tracking-wider uppercase font-semibold">05 — Send Transmission</span>
+      </div>
+      <h2 class="text-4xl font-extrabold text-white text-center mb-16 reveal">Get In Touch</h2>
+
+      <!-- Form & Links Grid -->
+      <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        
+        <!-- Info Links Column -->
+        <div class="flex flex-col justify-between h-full reveal">
+          <p class="text-gray-300 text-lg leading-relaxed mb-8 max-w-[500px]">
+            Whether you have a project, opportunity, or just want to connect — I'm always open. Available for full-time roles and freelance projects.
+          </p>
+
+          <div class="flex flex-col gap-5">
+            <!-- Email -->
+            <a href="mailto:jahanzaibshakeel5@gmail.com" class="flex items-center gap-5 p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl hover:border-[#7042f87a] transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#7042f81a] border border-[#7042f83d] flex items-center justify-center text-[#b49bff] group-hover:bg-[#7042f83a] transition-all duration-300 text-xl">✉️</div>
+              <div>
+                <div class="text-gray-400 text-[10px] uppercase tracking-wider font-semibold">Email</div>
+                <div class="text-white text-sm md:text-base font-medium mt-1">jahanzaibshakeel5@gmail.com</div>
+              </div>
+            </a>
+
+            <!-- Phone (WhatsApp Redirect) -->
+            <a href="https://wa.me/923145408919" target="_blank" rel="noreferrer noopener" class="flex items-center gap-5 p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl hover:border-[#7042f87a] transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#7042f81a] border border-[#7042f83d] flex items-center justify-center text-[#b49bff] group-hover:bg-[#7042f83a] transition-all duration-300 text-xl">📞</div>
+              <div>
+                <div class="text-gray-400 text-[10px] uppercase tracking-wider font-semibold">WhatsApp / Phone</div>
+                <div class="text-white text-sm md:text-base font-medium mt-1">+92 314 5408919</div>
+              </div>
+            </a>
+
+            <!-- Github -->
+            <a href="https://github.com/JahanzaibDev" target="_blank" class="flex items-center gap-5 p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl hover:border-[#7042f87a] transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#7042f81a] border border-[#7042f83d] flex items-center justify-center text-[#b49bff] group-hover:bg-[#7042f83a] transition-all duration-300 text-xl">🐙</div>
+              <div>
+                <div class="text-gray-400 text-[10px] uppercase tracking-wider font-semibold">GitHub</div>
+                <div class="text-white text-sm md:text-base font-medium mt-1">github.com/JahanzaibDev</div>
+              </div>
+            </a>
+
+            <!-- Linkedin -->
+            <a href="https://www.linkedin.com/in/muhammad-jahanzaib-69a33733b" target="_blank" rel="noreferrer noopener" class="flex items-center gap-5 p-5 bg-[rgba(3,0,20,0.6)] border border-[#7042f822] rounded-xl hover:border-[#7042f87a] transition-all duration-300 group">
+              <div class="w-12 h-12 rounded-lg bg-[#7042f81a] border border-[#7042f83d] flex items-center justify-center text-[#b49bff] group-hover:bg-[#7042f83a] transition-all duration-300 text-xl">💼</div>
+              <div>
+                <div class="text-gray-400 text-[10px] uppercase tracking-wider font-semibold">LinkedIn</div>
+                <div class="text-white text-sm md:text-base font-medium mt-1">Muhammad Jahanzaib</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Form Column -->
+        <form id="contact-form" class="flex flex-col gap-6 w-full p-8 bg-[rgba(3,0,20,0.6)] border border-[#7042f83b] rounded-2xl shadow-xl shadow-purple-500/5 backdrop-blur-md relative overflow-hidden group hover:border-[#7042f88b] transition-all duration-300 reveal">
+          <!-- Top gradient bar -->
+          <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500 to-cyan-500"></div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Name</label>
+            <input type="text" required id="name-input" placeholder="Your name" class="w-full bg-[rgba(3,0,20,0.6)] border border-[#7042f83d] rounded-lg p-4 text-white text-sm outline-none focus:border-[#7042f8] focus:shadow-[0_0_12px_rgba(112,66,248,0.2)] transition-all duration-300" />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Email</label>
+            <input type="email" required id="email-input" placeholder="your@email.com" class="w-full bg-[rgba(3,0,20,0.6)] border border-[#7042f83d] rounded-lg p-4 text-white text-sm outline-none focus:border-[#7042f8] focus:shadow-[0_0_12px_rgba(112,66,248,0.2)] transition-all duration-300" />
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-gray-400 text-xs uppercase tracking-wider font-semibold">Message</label>
+            <textarea required id="message-input" rows="5" placeholder="Tell me about your project or opportunity..." class="w-full bg-[rgba(3,0,20,0.6)] border border-[#7042f83d] rounded-lg p-4 text-white text-sm outline-none resize-none focus:border-[#7042f8] focus:shadow-[0_0_12px_rgba(112,66,248,0.2)] transition-all duration-300"></textarea>
+          </div>
+
+          <button type="submit" class="py-4 text-center text-white cursor-pointer rounded-lg button-primary font-bold tracking-wider uppercase text-sm flex items-center justify-center gap-2 hover:translate-y-[-2px] active:translate-y-[0px] transition-all duration-200">
+            Send Transmission
+            <span class="text-lg">➔</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer class="w-full py-10 px-6 border-t border-[#7042f822] bg-[rgba(3,0,20,0.6)] relative z-30 mt-20">
+    <div class="max-w-[1240px] m-auto flex flex-col md:flex-row items-center justify-between gap-6 text-gray-200">
+      <div class="font-bold text-lg tracking-[3px] text-purple-400">JZB.DEV</div>
+      <div class="text-sm text-gray-400 text-center">&copy; <span id="current-year"></span> Jahanzaib Shakeel. All rights reserved.</div>
+      <div class="flex gap-6 text-sm">
+        <a href="mailto:jahanzaibshakeel5@gmail.com" class="hover:text-[#b49bff] transition">Email</a>
+        <a href="https://github.com/JahanzaibDev" target="_blank" class="hover:text-[#b49bff] transition">GitHub</a>
+        <a href="https://www.linkedin.com/in/muhammad-jahanzaib-69a33733b" target="_blank" class="hover:text-[#b49bff] transition">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── JAVASCRIPT LOGIC ────────────────────────────────────────── -->
+  <script>
+    // Set current year in footer
+    document.getElementById('current-year').innerText = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    hamburgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Custom Cursor tracking logic
+    const dot = document.getElementById('cur-dot');
+    const ring = document.getElementById('cur-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+    });
+
+    (function animateCursor() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateCursor);
+    })();
+
+    // Hover scales on links/buttons
+    document.querySelectorAll('a, button, form, input, textarea, .skill-badge').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        dot.style.transform = 'translate(-50%,-50%) scale(1.5)';
+        ring.style.transform = 'translate(-50%,-50%) scale(1.4)';
+        ring.style.borderColor = 'rgba(112,66,248,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        dot.style.transform = 'translate(-50%,-50%) scale(1)';
+        ring.style.transform = 'translate(-50%,-50%) scale(1)';
+        ring.style.borderColor = 'rgba(112,66,248,0.5)';
+      });
+    });
+
+    // Contact form submit logic
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name-input').value;
+      alert(`Transmission intercepted! Thank you, ${name || 'visitor'}.`);
+      document.getElementById('contact-form').reset();
+    });
+
+    // Marquee tech lists data
+    const ROW1 = [
+      { img: 'swiftui.svg', name: 'SwiftUI' },
+      { img: 'uikit.svg', name: 'UIKit' },
+      { img: 'swift.svg', name: 'Swift' },
+      { img: 'flutter.svg', name: 'Flutter' },
+      { img: 'dart.svg', name: 'Dart' },
+      { img: 'react.png', name: 'React' },
+      { img: 'js.png', name: 'JavaScript' },
+      { img: 'ts.png', name: 'TypeScript' },
+      { img: 'html.png', name: 'HTML5' },
+      { img: 'css.png', name: 'CSS3' },
+      { img: 'tailwind.png', name: 'Tailwind CSS' }
+    ];
+
+    const ROW2 = [
+      { img: 'csharp.svg', name: 'C#' },
+      { img: 'dotnet.svg', name: 'ASP.NET Core' },
+      { img: 'java.svg', name: 'Java' },
+      { img: 'sqlserver.svg', name: 'SQL Server' },
+      { img: 'mysql.png', name: 'MySQL' },
+      { img: 'postgresql.png', name: 'PostgreSQL' },
+      { img: 'mongodb.png', name: 'MongoDB' },
+      { img: 'firebase.png', name: 'Firebase' },
+      { img: 'docker.png', name: 'Docker' },
+      { img: 'xcode.svg', name: 'Xcode' },
+      { img: 'figma.png', name: 'Figma' }
+    ];
+
+    function renderMarquee(elementId, items) {
+      const el = document.getElementById(elementId);
+      // Double the items array to allow smooth infinite loop scrolling
+      const doubleItems = [...items, ...items, ...items];
+      el.innerHTML = doubleItems.map(item => `
+        <div class="skill-badge">
+          <img src="public/skills/${item.img}" alt="${item.name}" class="w-6 h-6 object-contain" />
+          <span class="text-white text-xs font-semibold tracking-wide">${item.name}</span>
+        </div>
+      `).join('');
+    }
+
+    renderMarquee('mq1', ROW1);
+    renderMarquee('mq2', ROW2);
+
+    // Scroll Reveal trigger logic via IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Navbar background change on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(3, 0, 20, 0.95)';
+        navbar.style.borderBottom = '1px solid rgba(112, 66, 248, 0.2)';
+      } else {
+        navbar.style.background = 'rgba(3, 0, 20, 0.15)';
+        navbar.style.borderBottom = 'none';
+      }
+    });
+
+    // Three.js rotating 3D starfield logic
+    (function initThreeBackground() {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas-bg'), alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      const geometry = new THREE.BufferGeometry();
+      const count = 3500;
+      const positions = new Float32Array(count * 3);
+
+      for (let i = 0; i < count * 3; i += 3) {
+        const u = Math.random();
+        const v = Math.random();
+        const theta = u * 2.0 * Math.PI;
+        const phi = Math.acos(2.0 * v - 1.0);
+        const r = 2.4 * Math.cbrt(Math.random()); // sphere points spacing
+        positions[i] = r * Math.sin(phi) * Math.cos(theta);
+        positions[i+1] = r * Math.sin(phi) * Math.sin(theta);
+        positions[i+2] = r * Math.cos(phi);
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      // White circular dots material
+      const material = new THREE.PointsMaterial({
+        size: 0.006,
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.75,
+        depthWrite: false,
+        sizeAttenuation: true
+      });
+
+      const starField = new THREE.Points(geometry, material);
+      scene.add(starField);
+
+      // Rotate group slightly to create tilt
+      starField.rotation.z = Math.PI / 8;
+
+      camera.position.z = 1.25;
+
+      function renderFrame() {
+        requestAnimationFrame(renderFrame);
+        starField.rotation.x -= 0.0003;
+        starField.rotation.y -= 0.0005;
+        renderer.render(scene, camera);
+      }
+      renderFrame();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    })();
+  </script>
+</body>
+</html>

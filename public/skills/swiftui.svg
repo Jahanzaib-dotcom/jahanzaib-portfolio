@@ -1,0 +1,14 @@
+<svg viewBox="0 0 128 128" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="swiftui-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A73E8" />
+      <stop offset="100%" stop-color="#7042F8" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#0A061E" stroke="#7042F8" stroke-width="2" />
+  <g transform="translate(14, 24)">
+    <path d="M50 0 C77.6 0 100 22.4 100 50 C100 77.6 77.6 100 50 100 C22.4 100 0 77.6 0 50 C0 22.4 22.4 0 50 0 Z" fill="none" stroke="url(#swiftui-grad)" stroke-width="8" opacity="0.3" />
+    <path d="M25 40 C25 25, 45 15, 60 25 C75 35, 75 55, 60 65 C45 75, 25 75, 25 60 C25 50, 45 45, 60 45" fill="none" stroke="#FF5E3A" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M75 60 C75 75, 55 85, 40 75 C25 65, 25 45, 40 35 C55 25, 75 25, 75 40 C75 50, 55 55, 40 55" fill="none" stroke="#00D4FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

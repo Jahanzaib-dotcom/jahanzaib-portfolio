@@ -1,0 +1,10 @@
+<svg viewBox="0 0 128 128" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="csharp-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9B49FF" />
+      <stop offset="100%" stop-color="#512BD4" />
+    </linearGradient>
+  </defs>
+  <path d="M64,6 L118,37 L118,99 L64,130 L10,99 L10,37 Z" fill="url(#csharp-grad)" />
+  <text x="64" y="86" font-family="'Orbitron', 'Inter', sans-serif" font-size="52" font-weight="bold" fill="#FFFFFF" text-anchor="middle">C#</text>
+</svg>
